@@ -7,9 +7,7 @@ interface Message {
 }
 
 export default defineEventHandler(async (event) => {
-    const anthropic = new Anthropic({
-        apiKey: process.env.MODEL_API_KEY,
-    });
+    const anthropic = new Anthropic();
 
     let messages: MessageParam[] = [];
     const previousMessages = await readBody(event);
