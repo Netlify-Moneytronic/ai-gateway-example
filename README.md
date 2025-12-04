@@ -6,7 +6,7 @@
 
 This is a [Nuxt.js](https://nuxt.com/) v3 project bootstrapped with [`create nuxt`](https://github.com/nuxt/cli) and set up to be instantly deployed to [Netlify](https://url.netlify.com/SyTBPVamO)! You can take a look at the live version of the site [here](https://nuxt-ai-chat.netlify.app).
 
-This project is a simple chat app that gives you the option to deploy either [Anthropics Claude Sonnet](https://www.anthropic.com/claude) or [OpenAI's GPT-4o Mini](https://openai.com/index/gpt-4o-mini-advancing-cost-efficient-intelligence/). It is a very minimal site that includes 2 server functions that call the models depending on what environment variable you set. 
+This project is a simple chat app that lets you compare responses from [Anthropic's Claude Sonnet](https://www.anthropic.com/claude) and [OpenAI's GPT-4o Mini](https://openai.com/index/gpt-4o-mini-advancing-cost-efficient-intelligence/) side by side. It uses **Netlify AI Gateway** to handle AI inference without requiring you to manage API keys. The app includes 2 server functions that call both models simultaneously, allowing you to compare their responses to the same prompt. 
 
 With Netlify, you'll have access to features like [Branch Deploys](https://docs.netlify.com/site-deploys/overview/#branches-and-deploys) and [Deploy Previews](https://docs.netlify.com/deploy-preview/), so we encourage you to deploy this, modify it, learn and have fun!
 
@@ -74,24 +74,18 @@ You can start editing the page by modifying `pages/index.vue`. The page auto-upd
 3. Run `npm run dev` or `ntl dev`
 4. Make your changes
 
-### Environment Variables
+### Netlify AI Gateway
 
-Currently this Nuxt site supports Anthropics Claude's Sonnet and Open AI's GPT 4o Mini please enter them exactly as you see them below to avoid errors:
+This project uses **Netlify AI Gateway**, which means you don't need to provide your own API keys!
 
-**MODEL_PROVIDER:** 
-```
-openai
-```
-or 
+When deployed to Netlify, the AI Gateway automatically:
+- Provides API authentication for both OpenAI and Anthropic
+- Handles rate limiting and caching
+- Bills your Netlify account based on actual token usage
 
-```
-anthropic
-```
+**No environment variables are required** - just deploy to Netlify and start chatting!
 
-**MODEL_API_KEY:** 
-```
-sk-proj-******** your key ***
-```
+> **Note:** The AI Gateway is available by default in all credit-based Netlify plans. Your project must have a production deploy for the AI Gateway to activate.
 ⚠️ **Warning** ⚠️
 
 This project will deploy a live site available all over the web. If you do not want your Model being hit directly from the public internet, we recommend locking your site on Netlify using [Site Protection](https://docs.netlify.com/security/secure-access-to-sites/site-protection/#basic-password-protection-versus-team-login-protection)

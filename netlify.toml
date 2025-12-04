@@ -1,8 +1,5 @@
 [dev]
 port = 3001
 
-
-[template.environment]
-#Variables for the template
-MODEL_PROVIDER = "OPENAI"
-MODEL_API_KEY = "OPENAI_API_KEY"
+# No environment variables needed!
+# Netlify AI Gateway automatically provides API keys and base URLs
