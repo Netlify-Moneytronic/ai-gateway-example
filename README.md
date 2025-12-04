@@ -1,6 +1,6 @@
 ![Nuxt & Netlify](https://images.contentstack.io/v3/assets/blt5e93e46bee7dad91/blt653c659fb4ca5d7f/67ec5e4629f0cd5454185bcb/vue-js.png)
 
-# Nuxt + Netlify AI Starter
+# Nuxt + Netlify AI Gateway Starter
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/d5efd8aa-ae58-4fae-8633-c8c35c46bf3e/deploy-status)](https://app.netlify.com/sites/nuxt-ai-chat/deploys)
 
