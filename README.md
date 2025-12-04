@@ -10,7 +10,7 @@ This project is a simple chat app that lets you compare responses from [Anthropi
 
 With Netlify, you'll have access to features like [Branch Deploys](https://docs.netlify.com/site-deploys/overview/#branches-and-deploys) and [Deploy Previews](https://docs.netlify.com/deploy-preview/), so we encourage you to deploy this, modify it, learn and have fun!
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=github.com/Netlify-Moneytronic/ai-gateway-example&utm_source=github&utm_medium=ai-gateway-example&utm_campaign=solutions-architects)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/Netlify-Moneytronic/ai-gateway-example&utm_source=github&utm_medium=ai-gateway-example&utm_campaign=solutions-architects)
 
 (If you click this button, it will create a new repo for you that looks exactly like this one, and sets that repo up immediately for deployment on Netlify)
 
@@ -65,7 +65,7 @@ You can start editing the page by modifying `pages/index.vue`. The page auto-upd
 
 **Option one:** One-click deploy
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=github.com/Netlify-Moneytronic/ai-gateway-example&utm_source=github&utm_medium=ai-gateway-example&utm_campaign=solutions-architects)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/Netlify-Moneytronic/ai-gateway-example&utm_source=github&utm_medium=ai-gateway-example&utm_campaign=solutions-architects)
 
 **Option two:** Manual clone
 
