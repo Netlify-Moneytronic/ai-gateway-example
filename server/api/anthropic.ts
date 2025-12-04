@@ -1,15 +1,9 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { MessageParam } from '@anthropic-ai/sdk/resources/index.mjs';
 
-interface Message {
-    role: 'assistant' | 'user' | 'system'
-    content: string
-}
-
 export default defineEventHandler(async (event) => {
-    const anthropic = new Anthropic({
-        apiKey: process.env.MODEL_API_KEY,
-    });
+    // Netlify AI Gateway automatically provides ANTHROPIC_API_KEY and ANTHROPIC_BASE_URL
+    const anthropic = new Anthropic();
 
     let messages: MessageParam[] = [];
     const previousMessages = await readBody(event);
@@ -21,7 +15,10 @@ export default defineEventHandler(async (event) => {
         messages
     });
 
+    const textBlock = msg.content.find(block => block.type === 'text');
+    const messageText = textBlock && 'text' in textBlock ? textBlock.text : '';
+
     return {
-        message: msg.content[0].text
+        message: messageText
     };
 });
