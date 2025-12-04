@@ -9,12 +9,14 @@ interface Message {
 
 // State
 const title = ref<string>('')
-const fullTitle = 'Compare OpenAI and Anthropic side by side...'
+const fullTitle = 'Compare OpenAI, Anthropic, and Gemini side by side...'
 const typeDelay = 30
 const openaiChatHistory = ref<Message[]>([{ role: 'assistant', content: '' }])
 const anthropicChatHistory = ref<Message[]>([{ role: 'assistant', content: '' }])
+const geminiChatHistory = ref<Message[]>([{ role: 'assistant', content: '' }])
 const openaiLoading = ref<boolean>(false)
 const anthropicLoading = ref<boolean>(false)
+const geminiLoading = ref<boolean>(false)
 const message = ref<string>('')
 
 // Methods
@@ -26,21 +28,21 @@ const typeText = async () => {
 }
 
 //Scroll messages as they are added
-const scrollToEnd = (provider: 'openai' | 'anthropic') => {
+const scrollToEnd = (provider: 'openai' | 'anthropic' | 'gemini') => {
   setTimeout(() => {
     const chatMessages = document.querySelector(`.${provider}-messages > div:last-child`)
     chatMessages?.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }, 50)
 }
 
-//Send prompt to both APIs
+//Send prompt to all three APIs
 const sendPrompt = async () => {
   if (!message.value) return
 
   const userMessage = message.value
   message.value = ''
 
-  // Add user message to both chat histories
+  // Add user message to all chat histories
   openaiChatHistory.value.push({
     role: 'user',
     content: userMessage
@@ -49,9 +51,14 @@ const sendPrompt = async () => {
     role: 'user',
     content: userMessage
   })
+  geminiChatHistory.value.push({
+    role: 'user',
+    content: userMessage
+  })
 
   scrollToEnd('openai')
   scrollToEnd('anthropic')
+  scrollToEnd('gemini')
 
   // Send to OpenAI
   openaiLoading.value = true
@@ -108,6 +115,34 @@ const sendPrompt = async () => {
       anthropicLoading.value = false
       scrollToEnd('anthropic')
     })
+
+  // Send to Gemini
+  geminiLoading.value = true
+  fetch('/api/gemini', {
+    method: 'POST',
+    body: JSON.stringify(geminiChatHistory.value.slice(1))
+  })
+    .then(async (res) => {
+      if (res.ok) {
+        const response = await res.json()
+        geminiChatHistory.value.push({
+          role: 'assistant',
+          content: response?.message
+        })
+      } else {
+        throw new Error('Gemini API request failed')
+      }
+    })
+    .catch((error) => {
+      geminiChatHistory.value.push({
+        role: 'system',
+        content: 'Sorry, an error occurred with Gemini.'
+      })
+    })
+    .finally(() => {
+      geminiLoading.value = false
+      scrollToEnd('gemini')
+    })
 }
 
 // Initialize typing animation
@@ -123,8 +158,8 @@ onMounted(() => {
         {{ title }}<span class="animate-pulse">|</span>
       </h1>
 
-      <!-- Dual chat interface -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+      <!-- Triple chat interface -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full">
         <!-- OpenAI Chat -->
         <div class="flex flex-col space-y-4">
           <div class="flex justify-center items-center space-x-2">
@@ -196,6 +231,47 @@ onMounted(() => {
             </div>
           </div>
         </div>
+
+        <!-- Gemini Chat -->
+        <div class="flex flex-col space-y-4">
+          <div class="flex justify-center items-center space-x-2">
+            <svg class="w-8 h-8 logo-container" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" fill="#4285F4"/>
+              <path d="M12 2L12 22" stroke="white" stroke-width="1"/>
+              <path d="M2 7L22 17" stroke="white" stroke-width="1"/>
+              <path d="M2 17L22 7" stroke="white" stroke-width="1"/>
+            </svg>
+            <h2 class="text-lg font-semibold text-white">Gemini</h2>
+          </div>
+
+          <div class="bg-[#1C1C1C] rounded-2xl shadow-lg h-[60vh] flex flex-col justify-between">
+            <div class="h-full overflow-auto gemini-messages p-6">
+              <div
+                v-for="(msg, i) in geminiChatHistory"
+                :key="i"
+                class="flex flex-col mb-4"
+              >
+                <div
+                  :class="[
+                    msg.role === 'assistant' ? 'pr-8' : 'pl-8 ml-auto',
+                  ]"
+                >
+                  <div class="p-3 text-sm text-white bg-[#2C2C2C] rounded-2xl" :class="[
+                    msg.role === 'assistant' ? 'max-w-[80%]' : ''
+                  ]">
+                    {{ msg.content }}
+                  </div>
+                </div>
+              </div>
+              <div
+                v-if="geminiLoading"
+                class="p-4 ml-10 mr-auto"
+              >
+                <span class="loader" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Shared input at the bottom -->
@@ -205,7 +281,7 @@ onMounted(() => {
             <input
               v-model="message"
               type="text"
-              placeholder="Ask both models anything..."
+              placeholder="Ask all three models anything..."
               class="w-full p-3 text-sm text-white bg-[#2C2C2C] rounded-xl border-none focus:ring-0 focus:outline-none"
             />
             <button
