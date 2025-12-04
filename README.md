@@ -65,11 +65,11 @@ You can start editing the page by modifying `pages/index.vue`. The page auto-upd
 
 **Option one:** One-click deploy
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/SeanMcTernan/nuxt_chat_app&utm_source=github&utm_medium=nuxt-chat-template&utm_campaign=solutions-engineering)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=github.com/Netlify-Moneytronic/ai-gateway-example&utm_source=github&utm_medium=ai-gateway-example&utm_campaign=solutions-architects)
 
 **Option two:** Manual clone
 
-1. Clone this repo: `git clone https://github.com/SeanMcTernan/nuxt_chat_app.git`
+1. Clone this repo: `git clone https://github.com/Netlify-Moneytronic/ai-gateway-example.git`
 2. Navigate to the directory and run `npm install`
 3. Run `npm run dev` or `ntl dev`
 4. Make your changes

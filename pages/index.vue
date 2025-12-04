@@ -310,7 +310,7 @@ onMounted(() => {
           <img src="/nuxt.svg" class="h-6" alt="Nuxt Logo" />
         </NuxtLink>
         <NuxtLink
-          to="https://github.com/SeanMcTernan/nuxt_chat_app"
+          to="https://github.com/Netlify-Moneytronic/ai-gateway-example"
           class="flex items-center font-medium underline transition-colors underline-offset-4 hover:text-white/70"
         >
           <img src="/github.svg" class="h-4" alt="GitHub Logo" />
