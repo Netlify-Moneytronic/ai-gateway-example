@@ -316,6 +316,75 @@ onMounted(() => {
           <img src="/github.svg" class="h-4" alt="GitHub Logo" />
         </NuxtLink>
       </div>
+
+      <!-- Contact form powered by Netlify Forms -->
+      <section class="bg-[#0f1a1a] border border-[#2C2C2C] rounded-2xl p-6 text-white shadow-lg">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+          <div>
+            <h3 class="text-xl font-semibold">Contact the team</h3>
+            <p class="text-sm text-white/70">Questions, ideas, or feedback? Drop a note and we will reply soon.</p>
+          </div>
+          <span class="text-xs uppercase tracking-wide text-white/60">Netlify Forms enabled</span>
+        </div>
+
+        <form
+          name="contact"
+          method="POST"
+          data-netlify="true"
+          data-netlify-honeypot="bot-field"
+          class="grid grid-cols-1 md:grid-cols-2 gap-4"
+        >
+          <input type="hidden" name="form-name" value="contact" />
+          <div class="hidden">
+            <label>
+              Don’t fill this out if you’re human:
+              <input name="bot-field" />
+            </label>
+          </div>
+
+          <label class="flex flex-col space-y-2">
+            <span class="text-sm font-medium text-white/80">Name</span>
+            <input
+              name="name"
+              type="text"
+              required
+              class="p-3 rounded-xl bg-[#1C1C1C] border border-[#2C2C2C] focus:border-white/40 focus:outline-none"
+              placeholder="Ada Lovelace"
+            />
+          </label>
+
+          <label class="flex flex-col space-y-2">
+            <span class="text-sm font-medium text-white/80">Email</span>
+            <input
+              name="email"
+              type="email"
+              required
+              class="p-3 rounded-xl bg-[#1C1C1C] border border-[#2C2C2C] focus:border-white/40 focus:outline-none"
+              placeholder="you@example.com"
+            />
+          </label>
+
+          <label class="flex flex-col space-y-2 md:col-span-2">
+            <span class="text-sm font-medium text-white/80">Message</span>
+            <textarea
+              name="message"
+              rows="4"
+              required
+              class="p-3 rounded-xl bg-[#1C1C1C] border border-[#2C2C2C] focus:border-white/40 focus:outline-none"
+              placeholder="Tell us what you’re thinking about."
+            ></textarea>
+          </label>
+
+          <div class="md:col-span-2 flex justify-end">
+            <button
+              type="submit"
+              class="px-4 py-2 rounded-xl bg-white text-black font-semibold hover:bg-white/90 transition"
+            >
+              Send message
+            </button>
+          </div>
+        </form>
+      </section>
     </div>
   </div>
 </template>
@@ -323,7 +392,8 @@ onMounted(() => {
 <style>
 html, 
 body {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   overscroll-behavior: none;
   height: 100%;
 }
