@@ -6,15 +6,14 @@ interface Message {
 }
 
 export default defineEventHandler(async (event) => {
-    const openai = new OpenAI({
-        apiKey: process.env.MODEL_API_KEY
-    });
+    // Netlify AI Gateway automatically provides OPENAI_API_KEY and OPENAI_BASE_URL
+    const openai = new OpenAI();
 
     let messages: Message[] = [];
     const previousMessages = await readBody(event);
     messages = JSON.parse(previousMessages);
     const completion = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
+        model: "gpt-5",
         messages
     });
 
