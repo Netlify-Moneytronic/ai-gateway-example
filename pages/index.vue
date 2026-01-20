@@ -1,5 +1,18 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
+import { marked } from 'marked'
+
+// Configure marked for safe rendering
+marked.setOptions({
+  breaks: true,
+  gfm: true
+})
+
+// Helper function to render markdown
+const renderMarkdown = (content: string): string => {
+  if (!content) return ''
+  return marked(content) as string
+}
 
 // Define types
 interface Message {
@@ -8,9 +21,7 @@ interface Message {
 }
 
 // State
-const title = ref<string>('')
-const fullTitle = 'Compare GPT 5.2, Claude Opus 4.5, and Gemini 3 Pro side by side...'
-const typeDelay = 30
+const title = 'Netlify AI Gateway Demo'
 const openaiChatHistory = ref<Message[]>([{ role: 'assistant', content: '' }])
 const anthropicChatHistory = ref<Message[]>([{ role: 'assistant', content: '' }])
 const geminiChatHistory = ref<Message[]>([{ role: 'assistant', content: '' }])
@@ -18,13 +29,15 @@ const openaiLoading = ref<boolean>(false)
 const anthropicLoading = ref<boolean>(false)
 const geminiLoading = ref<boolean>(false)
 const message = ref<string>('')
+const isContactModalOpen = ref<boolean>(false)
 
-// Methods
-const typeText = async () => {
-  for (let i = 0; i < fullTitle.length; i++) {
-    await new Promise(resolve => setTimeout(resolve, typeDelay))
-    title.value = fullTitle.slice(0, i + 1)
-  }
+// Modal methods
+const openContactModal = () => {
+  isContactModalOpen.value = true
+}
+
+const closeContactModal = () => {
+  isContactModalOpen.value = false
 }
 
 //Scroll messages as they are added
@@ -144,193 +157,218 @@ const sendPrompt = async () => {
       scrollToEnd('gemini')
     })
 }
-
-// Initialize typing animation
-onMounted(() => {
-  typeText()
-})
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient flex items-center px-4 md:px-8 py-8">
-    <div class="max-w-7xl mx-auto w-full flex flex-col space-y-8">
-      <h1 class="text-2xl font-bold text-center text-white">
-        {{ title }}<span class="animate-pulse">|</span>
-      </h1>
+  <div class="h-screen bg-gradient flex flex-col px-4 md:px-6 py-4 overflow-hidden">
+    <h1 class="text-xl md:text-2xl font-bold text-center text-white mb-4 flex-shrink-0">
+      {{ title }}
+    </h1>
 
-      <!-- Triple chat interface -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full">
-        <!-- OpenAI Chat -->
-        <div class="flex flex-col space-y-4">
-          <div class="flex flex-col justify-center items-center space-y-1">
-            <div class="flex items-center space-x-2">
-              <img src="/openai.svg" alt="OpenAI Logo" class="w-8 h-8 logo-container" />
-              <h2 class="text-lg font-semibold text-white">OpenAI</h2>
-            </div>
-            <span class="text-xs text-white/60">GPT 5.2</span>
+    <!-- Triple chat interface -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 flex-1 min-h-0">
+      <!-- OpenAI Chat -->
+      <div class="flex flex-col min-h-0">
+        <div class="flex flex-col justify-center items-center space-y-1 mb-2 flex-shrink-0">
+          <div class="flex items-center space-x-2">
+            <img src="/openai.svg" alt="OpenAI Logo" class="w-6 h-6 logo-container" />
+            <h2 class="text-base font-semibold text-white">OpenAI</h2>
           </div>
-
-          <div class="bg-[#1C1C1C] rounded-2xl shadow-lg h-[60vh] flex flex-col justify-between">
-            <div class="h-full overflow-auto openai-messages p-6">
-              <div
-                v-for="(msg, i) in openaiChatHistory"
-                :key="i"
-                class="flex flex-col mb-4"
-              >
-                <div
-                  :class="[
-                    msg.role === 'assistant' ? 'pr-8' : 'pl-8 ml-auto',
-                  ]"
-                >
-                  <div class="p-3 text-sm text-white bg-[#2C2C2C] rounded-2xl" :class="[
-                    msg.role === 'assistant' ? 'max-w-[80%]' : ''
-                  ]">
-                    {{ msg.content }}
-                  </div>
-                </div>
-              </div>
-              <div
-                v-if="openaiLoading"
-                class="p-4 ml-10 mr-auto"
-              >
-                <span class="loader" />
-              </div>
-            </div>
-          </div>
+          <span class="text-xs text-white/60">GPT 5.2</span>
         </div>
 
-        <!-- Anthropic Chat -->
-        <div class="flex flex-col space-y-4">
-          <div class="flex flex-col justify-center items-center space-y-1">
-            <div class="flex items-center space-x-2">
-              <img src="/anthropic.svg" alt="Anthropic Logo" class="w-8 h-8 logo-container" />
-              <h2 class="text-lg font-semibold text-white">Anthropic</h2>
-            </div>
-            <span class="text-xs text-white/60">Claude Opus 4.5</span>
-          </div>
-
-          <div class="bg-[#1C1C1C] rounded-2xl shadow-lg h-[60vh] flex flex-col justify-between">
-            <div class="h-full overflow-auto anthropic-messages p-6">
-              <div
-                v-for="(msg, i) in anthropicChatHistory"
-                :key="i"
-                class="flex flex-col mb-4"
-              >
-                <div
-                  :class="[
-                    msg.role === 'assistant' ? 'pr-8' : 'pl-8 ml-auto',
-                  ]"
-                >
-                  <div class="p-3 text-sm text-white bg-[#2C2C2C] rounded-2xl" :class="[
-                    msg.role === 'assistant' ? 'max-w-[80%]' : ''
-                  ]">
-                    {{ msg.content }}
-                  </div>
-                </div>
-              </div>
-              <div
-                v-if="anthropicLoading"
-                class="p-4 ml-10 mr-auto"
-              >
-                <span class="loader" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Gemini Chat -->
-        <div class="flex flex-col space-y-4">
-          <div class="flex flex-col justify-center items-center space-y-1">
-            <div class="flex items-center space-x-2">
-              <svg class="w-8 h-8 logo-container" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" fill="#4285F4"/>
-                <path d="M12 2L12 22" stroke="white" stroke-width="1"/>
-                <path d="M2 7L22 17" stroke="white" stroke-width="1"/>
-                <path d="M2 17L22 7" stroke="white" stroke-width="1"/>
-              </svg>
-              <h2 class="text-lg font-semibold text-white">Gemini</h2>
-            </div>
-            <span class="text-xs text-white/60">Gemini 3 Pro</span>
-          </div>
-
-          <div class="bg-[#1C1C1C] rounded-2xl shadow-lg h-[60vh] flex flex-col justify-between">
-            <div class="h-full overflow-auto gemini-messages p-6">
-              <div
-                v-for="(msg, i) in geminiChatHistory"
-                :key="i"
-                class="flex flex-col mb-4"
-              >
-                <div
-                  :class="[
-                    msg.role === 'assistant' ? 'pr-8' : 'pl-8 ml-auto',
-                  ]"
-                >
-                  <div class="p-3 text-sm text-white bg-[#2C2C2C] rounded-2xl" :class="[
-                    msg.role === 'assistant' ? 'max-w-[80%]' : ''
-                  ]">
-                    {{ msg.content }}
-                  </div>
-                </div>
-              </div>
-              <div
-                v-if="geminiLoading"
-                class="p-4 ml-10 mr-auto"
-              >
-                <span class="loader" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Shared input at the bottom -->
-      <form @submit.prevent="sendPrompt" class="max-w-3xl mx-auto w-full">
-        <div class="p-4 bg-[#1C1C1C] border border-[#2C2C2C] rounded-2xl">
-          <div class="flex items-center w-full gap-2">
-            <input
-              v-model="message"
-              type="text"
-              placeholder="Ask all three models anything..."
-              class="w-full p-3 text-sm text-white bg-[#2C2C2C] rounded-xl border-none focus:ring-0 focus:outline-none"
-            />
-            <button
-              type="submit"
-              class="p-2 text-gray-400 hover:text-white transition-colors"
+        <div class="bg-[#1C1C1C] rounded-2xl shadow-lg flex-1 flex flex-col min-h-0">
+          <div class="flex-1 overflow-auto openai-messages p-4">
+            <div
+              v-for="(msg, i) in openaiChatHistory"
+              :key="i"
+              class="flex flex-col mb-4"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-              </svg>
-            </button>
+              <div
+                :class="[
+                  msg.role === 'assistant' ? 'pr-4' : 'pl-4 ml-auto',
+                ]"
+              >
+                <div
+                  class="p-3 text-sm text-white bg-[#2C2C2C] rounded-2xl markdown-content"
+                  :class="[msg.role === 'assistant' ? 'max-w-full' : '']"
+                  v-html="msg.role === 'assistant' ? renderMarkdown(msg.content) : msg.content"
+                ></div>
+              </div>
+            </div>
+            <div
+              v-if="openaiLoading"
+              class="p-4 ml-10 mr-auto"
+            >
+              <span class="loader" />
+            </div>
           </div>
         </div>
-      </form>
-
-      <div class="flex justify-center items-center space-x-6">
-        <NuxtLink
-          to="https://netlify.com/"
-          class="flex items-center font-medium underline transition-colors underline-offset-4 hover:text-white/70"
-        >
-          <img src="/netlify.svg" class="h-6" alt="Netlify Logo" />
-        </NuxtLink>
-        <NuxtLink
-          to="https://nuxt.com/docs"
-          class="flex items-center font-medium underline transition-colors underline-offset-4 hover:text-white/70"
-        >
-          <img src="/nuxt.svg" class="h-6" alt="Nuxt Logo" />
-        </NuxtLink>
-        <NuxtLink
-          to="https://github.com/Netlify-Moneytronic/ai-gateway-example"
-          class="flex items-center font-medium underline transition-colors underline-offset-4 hover:text-white/70"
-        >
-          <img src="/github.svg" class="h-4" alt="GitHub Logo" />
-        </NuxtLink>
       </div>
 
-      <!-- Contact form powered by Netlify Forms -->
-      <section class="bg-[#0f1a1a] border border-[#2C2C2C] rounded-2xl p-6 text-white shadow-lg">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+      <!-- Anthropic Chat -->
+      <div class="flex flex-col min-h-0">
+        <div class="flex flex-col justify-center items-center space-y-1 mb-2 flex-shrink-0">
+          <div class="flex items-center space-x-2">
+            <img src="/anthropic.svg" alt="Anthropic Logo" class="w-6 h-6 logo-container" />
+            <h2 class="text-base font-semibold text-white">Anthropic</h2>
+          </div>
+          <span class="text-xs text-white/60">Claude Opus 4.5</span>
+        </div>
+
+        <div class="bg-[#1C1C1C] rounded-2xl shadow-lg flex-1 flex flex-col min-h-0">
+          <div class="flex-1 overflow-auto anthropic-messages p-4">
+            <div
+              v-for="(msg, i) in anthropicChatHistory"
+              :key="i"
+              class="flex flex-col mb-4"
+            >
+              <div
+                :class="[
+                  msg.role === 'assistant' ? 'pr-4' : 'pl-4 ml-auto',
+                ]"
+              >
+                <div
+                  class="p-3 text-sm text-white bg-[#2C2C2C] rounded-2xl markdown-content"
+                  :class="[msg.role === 'assistant' ? 'max-w-full' : '']"
+                  v-html="msg.role === 'assistant' ? renderMarkdown(msg.content) : msg.content"
+                ></div>
+              </div>
+            </div>
+            <div
+              v-if="anthropicLoading"
+              class="p-4 ml-10 mr-auto"
+            >
+              <span class="loader" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gemini Chat -->
+      <div class="flex flex-col min-h-0">
+        <div class="flex flex-col justify-center items-center space-y-1 mb-2 flex-shrink-0">
+          <div class="flex items-center space-x-2">
+            <svg class="w-6 h-6 logo-container" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" fill="#4285F4"/>
+              <path d="M12 2L12 22" stroke="white" stroke-width="1"/>
+              <path d="M2 7L22 17" stroke="white" stroke-width="1"/>
+              <path d="M2 17L22 7" stroke="white" stroke-width="1"/>
+            </svg>
+            <h2 class="text-base font-semibold text-white">Gemini</h2>
+          </div>
+          <span class="text-xs text-white/60">Gemini 3 Pro</span>
+        </div>
+
+        <div class="bg-[#1C1C1C] rounded-2xl shadow-lg flex-1 flex flex-col min-h-0">
+          <div class="flex-1 overflow-auto gemini-messages p-4">
+            <div
+              v-for="(msg, i) in geminiChatHistory"
+              :key="i"
+              class="flex flex-col mb-4"
+            >
+              <div
+                :class="[
+                  msg.role === 'assistant' ? 'pr-4' : 'pl-4 ml-auto',
+                ]"
+              >
+                <div
+                  class="p-3 text-sm text-white bg-[#2C2C2C] rounded-2xl markdown-content"
+                  :class="[msg.role === 'assistant' ? 'max-w-full' : '']"
+                  v-html="msg.role === 'assistant' ? renderMarkdown(msg.content) : msg.content"
+                ></div>
+              </div>
+            </div>
+            <div
+              v-if="geminiLoading"
+              class="p-4 ml-10 mr-auto"
+            >
+              <span class="loader" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shared input at the bottom -->
+    <form @submit.prevent="sendPrompt" class="w-full mt-4 flex-shrink-0">
+      <div class="p-3 bg-[#1C1C1C] border border-[#2C2C2C] rounded-2xl">
+        <div class="flex items-center w-full gap-2">
+          <input
+            v-model="message"
+            type="text"
+            placeholder="Ask all three models anything..."
+            class="w-full p-3 text-sm text-white bg-[#2C2C2C] rounded-xl border-none focus:ring-0 focus:outline-none"
+          />
+          <button
+            type="submit"
+            class="p-2 text-gray-400 hover:text-white transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div class="flex justify-center items-center space-x-6 py-3 flex-shrink-0">
+      <NuxtLink
+        to="https://docs.netlify.com/build/ai-gateway/overview/"
+        class="flex items-center text-sm font-medium text-white/70 hover:text-white transition-colors underline underline-offset-4"
+      >
+        Built with Netlify AI Gateway
+      </NuxtLink>
+      <NuxtLink
+        to="https://netlify.com/"
+        class="flex items-center font-medium underline transition-colors underline-offset-4 hover:text-white/70"
+      >
+        <img src="/netlify.svg" class="h-5" alt="Netlify Logo" />
+      </NuxtLink>
+      <NuxtLink
+        to="https://nuxt.com/docs"
+        class="flex items-center font-medium underline transition-colors underline-offset-4 hover:text-white/70"
+      >
+        <img src="/nuxt.svg" class="h-5" alt="Nuxt Logo" />
+      </NuxtLink>
+      <NuxtLink
+        to="https://github.com/Netlify-Moneytronic/ai-gateway-example"
+        class="flex items-center font-medium underline transition-colors underline-offset-4 hover:text-white/70"
+      >
+        <img src="/github.svg" class="h-3" alt="GitHub Logo" />
+      </NuxtLink>
+      <button
+        @click="openContactModal"
+        class="flex items-center text-sm font-medium text-white/70 hover:text-white transition-colors underline underline-offset-4"
+      >
+        Contact
+      </button>
+    </div>
+
+    <!-- Contact Modal -->
+    <div
+      v-if="isContactModalOpen"
+      class="fixed inset-0 z-50 flex items-center justify-center"
+      @click.self="closeContactModal"
+    >
+      <!-- Backdrop -->
+      <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" @click="closeContactModal"></div>
+
+      <!-- Modal content -->
+      <div class="relative bg-[#0f1a1a] border border-[#2C2C2C] rounded-2xl p-6 text-white shadow-xl max-w-lg w-full mx-4 z-10">
+        <!-- Close button -->
+        <button
+          @click="closeContactModal"
+          class="absolute top-4 right-4 text-white/60 hover:text-white transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
           <div>
-            <h3 class="text-xl font-semibold">Contact the team</h3>
+            <h3 class="text-lg font-semibold">Contact the team</h3>
             <p class="text-sm text-white/70">Questions, ideas, or feedback? Drop a note and we will reply soon.</p>
           </div>
           <span class="text-xs uppercase tracking-wide text-white/60">Netlify Forms enabled</span>
@@ -341,59 +379,59 @@ onMounted(() => {
           method="POST"
           data-netlify="true"
           data-netlify-honeypot="bot-field"
-          class="grid grid-cols-1 md:grid-cols-2 gap-4"
+          class="grid grid-cols-1 md:grid-cols-2 gap-3"
         >
           <input type="hidden" name="form-name" value="contact" />
           <div class="hidden">
             <label>
-              Don’t fill this out if you’re human:
+              Don't fill this out if you're human:
               <input name="bot-field" />
             </label>
           </div>
 
-          <label class="flex flex-col space-y-2">
+          <label class="flex flex-col space-y-1">
             <span class="text-sm font-medium text-white/80">Name</span>
             <input
               name="name"
               type="text"
               required
-              class="p-3 rounded-xl bg-[#1C1C1C] border border-[#2C2C2C] focus:border-white/40 focus:outline-none"
+              class="p-2 rounded-xl bg-[#1C1C1C] border border-[#2C2C2C] focus:border-white/40 focus:outline-none text-sm"
               placeholder="Ada Lovelace"
             />
           </label>
 
-          <label class="flex flex-col space-y-2">
+          <label class="flex flex-col space-y-1">
             <span class="text-sm font-medium text-white/80">Email</span>
             <input
               name="email"
               type="email"
               required
-              class="p-3 rounded-xl bg-[#1C1C1C] border border-[#2C2C2C] focus:border-white/40 focus:outline-none"
+              class="p-2 rounded-xl bg-[#1C1C1C] border border-[#2C2C2C] focus:border-white/40 focus:outline-none text-sm"
               placeholder="you@example.com"
             />
           </label>
 
-          <label class="flex flex-col space-y-2 md:col-span-2">
+          <label class="flex flex-col space-y-1 md:col-span-2">
             <span class="text-sm font-medium text-white/80">Message</span>
             <textarea
               name="message"
-              rows="4"
+              rows="3"
               required
-              class="p-3 rounded-xl bg-[#1C1C1C] border border-[#2C2C2C] focus:border-white/40 focus:outline-none"
-              placeholder="Tell us what you’re thinking about."
+              class="p-2 rounded-xl bg-[#1C1C1C] border border-[#2C2C2C] focus:border-white/40 focus:outline-none text-sm"
+              placeholder="Tell us what you're thinking about."
             ></textarea>
           </label>
 
           <div class="md:col-span-2 flex justify-end">
             <button
               type="submit"
-              class="px-4 py-2 rounded-xl bg-white text-black font-semibold hover:bg-white/90 transition"
+              class="px-4 py-2 rounded-xl bg-white text-black font-semibold hover:bg-white/90 transition text-sm"
             >
               Send message
             </button>
           </div>
         </form>
-      </section>
+      </div>
     </div>
   </div>
 </template>
@@ -461,5 +499,126 @@ body {
   100% {
     opacity: 0.3;
   }
+}
+
+/* Markdown content styles */
+.markdown-content {
+  line-height: 1.6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.markdown-content p {
+  margin-bottom: 0.75rem;
+}
+
+.markdown-content p:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content h1 { font-size: 1.25rem; }
+.markdown-content h2 { font-size: 1.125rem; }
+.markdown-content h3 { font-size: 1rem; }
+
+.markdown-content ul,
+.markdown-content ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.markdown-content ul {
+  list-style-type: disc;
+}
+
+.markdown-content ol {
+  list-style-type: decimal;
+}
+
+.markdown-content li {
+  margin-bottom: 0.25rem;
+}
+
+.markdown-content code {
+  background-color: #1a1a1a;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.85em;
+}
+
+.markdown-content pre {
+  background-color: #1a1a1a;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 0.75rem 0;
+}
+
+.markdown-content pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.markdown-content blockquote {
+  border-left: 3px solid #4a4a4a;
+  padding-left: 0.75rem;
+  margin: 0.75rem 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
+}
+
+.markdown-content a {
+  color: #60a5fa;
+  text-decoration: underline;
+}
+
+.markdown-content a:hover {
+  color: #93c5fd;
+}
+
+.markdown-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.75rem 0;
+  font-size: 0.85rem;
+}
+
+.markdown-content th,
+.markdown-content td {
+  border: 1px solid #3a3a3a;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.markdown-content th {
+  background-color: #1a1a1a;
+  font-weight: 600;
+}
+
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid #3a3a3a;
+  margin: 1rem 0;
+}
+
+.markdown-content strong {
+  font-weight: 600;
+}
+
+.markdown-content em {
+  font-style: italic;
 }
 </style>
