@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
 
     // Call Gemini using the new SDK format
     const result = await genAI.models.generateContent({
-        model: 'gemini-2.5-pro',
+        model: 'gemini-3-pro-preview',
         contents
     });
 

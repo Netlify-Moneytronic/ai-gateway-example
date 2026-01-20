@@ -9,7 +9,7 @@ interface Message {
 
 // State
 const title = ref<string>('')
-const fullTitle = 'Compare OpenAI, Anthropic, and Gemini side by side...'
+const fullTitle = 'Compare GPT 5.2, Claude Opus 4.5, and Gemini 3 Pro side by side...'
 const typeDelay = 30
 const openaiChatHistory = ref<Message[]>([{ role: 'assistant', content: '' }])
 const anthropicChatHistory = ref<Message[]>([{ role: 'assistant', content: '' }])
@@ -162,9 +162,12 @@ onMounted(() => {
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full">
         <!-- OpenAI Chat -->
         <div class="flex flex-col space-y-4">
-          <div class="flex justify-center items-center space-x-2">
-            <img src="/openai.svg" alt="OpenAI Logo" class="w-8 h-8 logo-container" />
-            <h2 class="text-lg font-semibold text-white">OpenAI</h2>
+          <div class="flex flex-col justify-center items-center space-y-1">
+            <div class="flex items-center space-x-2">
+              <img src="/openai.svg" alt="OpenAI Logo" class="w-8 h-8 logo-container" />
+              <h2 class="text-lg font-semibold text-white">OpenAI</h2>
+            </div>
+            <span class="text-xs text-white/60">GPT 5.2</span>
           </div>
 
           <div class="bg-[#1C1C1C] rounded-2xl shadow-lg h-[60vh] flex flex-col justify-between">
@@ -198,9 +201,12 @@ onMounted(() => {
 
         <!-- Anthropic Chat -->
         <div class="flex flex-col space-y-4">
-          <div class="flex justify-center items-center space-x-2">
-            <img src="/anthropic.svg" alt="Anthropic Logo" class="w-8 h-8 logo-container" />
-            <h2 class="text-lg font-semibold text-white">Anthropic</h2>
+          <div class="flex flex-col justify-center items-center space-y-1">
+            <div class="flex items-center space-x-2">
+              <img src="/anthropic.svg" alt="Anthropic Logo" class="w-8 h-8 logo-container" />
+              <h2 class="text-lg font-semibold text-white">Anthropic</h2>
+            </div>
+            <span class="text-xs text-white/60">Claude Opus 4.5</span>
           </div>
 
           <div class="bg-[#1C1C1C] rounded-2xl shadow-lg h-[60vh] flex flex-col justify-between">
@@ -234,14 +240,17 @@ onMounted(() => {
 
         <!-- Gemini Chat -->
         <div class="flex flex-col space-y-4">
-          <div class="flex justify-center items-center space-x-2">
-            <svg class="w-8 h-8 logo-container" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" fill="#4285F4"/>
-              <path d="M12 2L12 22" stroke="white" stroke-width="1"/>
-              <path d="M2 7L22 17" stroke="white" stroke-width="1"/>
-              <path d="M2 17L22 7" stroke="white" stroke-width="1"/>
-            </svg>
-            <h2 class="text-lg font-semibold text-white">Gemini</h2>
+          <div class="flex flex-col justify-center items-center space-y-1">
+            <div class="flex items-center space-x-2">
+              <svg class="w-8 h-8 logo-container" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" fill="#4285F4"/>
+                <path d="M12 2L12 22" stroke="white" stroke-width="1"/>
+                <path d="M2 7L22 17" stroke="white" stroke-width="1"/>
+                <path d="M2 17L22 7" stroke="white" stroke-width="1"/>
+              </svg>
+              <h2 class="text-lg font-semibold text-white">Gemini</h2>
+            </div>
+            <span class="text-xs text-white/60">Gemini 3 Pro</span>
           </div>
 
           <div class="bg-[#1C1C1C] rounded-2xl shadow-lg h-[60vh] flex flex-col justify-between">

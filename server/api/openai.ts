@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
     const previousMessages = await readBody(event);
     messages = JSON.parse(previousMessages);
     const completion = await openai.chat.completions.create({
-        model: "gpt-5",
+        model: "gpt-5.2",
         messages
     });
 
