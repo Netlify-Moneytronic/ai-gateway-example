@@ -190,8 +190,8 @@ const sendPrompt = async () => {
                 ]"
               >
                 <div
-                  class="p-3 text-sm text-white bg-[#2C2C2C] rounded-2xl markdown-content"
-                  :class="[msg.role === 'assistant' ? 'max-w-full' : '']"
+                  class="p-3 text-sm text-white markdown-content"
+                  :class="[msg.role === 'assistant' ? 'max-w-full' : 'bg-[#2C2C2C] rounded-2xl']"
                   v-html="msg.role === 'assistant' ? renderMarkdown(msg.content) : msg.content"
                 ></div>
               </div>
@@ -229,8 +229,8 @@ const sendPrompt = async () => {
                 ]"
               >
                 <div
-                  class="p-3 text-sm text-white bg-[#2C2C2C] rounded-2xl markdown-content"
-                  :class="[msg.role === 'assistant' ? 'max-w-full' : '']"
+                  class="p-3 text-sm text-white markdown-content"
+                  :class="[msg.role === 'assistant' ? 'max-w-full' : 'bg-[#2C2C2C] rounded-2xl']"
                   v-html="msg.role === 'assistant' ? renderMarkdown(msg.content) : msg.content"
                 ></div>
               </div>
@@ -273,8 +273,8 @@ const sendPrompt = async () => {
                 ]"
               >
                 <div
-                  class="p-3 text-sm text-white bg-[#2C2C2C] rounded-2xl markdown-content"
-                  :class="[msg.role === 'assistant' ? 'max-w-full' : '']"
+                  class="p-3 text-sm text-white markdown-content"
+                  :class="[msg.role === 'assistant' ? 'max-w-full' : 'bg-[#2C2C2C] rounded-2xl']"
                   v-html="msg.role === 'assistant' ? renderMarkdown(msg.content) : msg.content"
                 ></div>
               </div>
