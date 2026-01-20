@@ -22,9 +22,9 @@ interface Message {
 
 // State
 const title = 'Netlify AI Gateway Demo'
-const openaiChatHistory = ref<Message[]>([{ role: 'assistant', content: '' }])
-const anthropicChatHistory = ref<Message[]>([{ role: 'assistant', content: '' }])
-const geminiChatHistory = ref<Message[]>([{ role: 'assistant', content: '' }])
+const openaiChatHistory = ref<Message[]>([])
+const anthropicChatHistory = ref<Message[]>([])
+const geminiChatHistory = ref<Message[]>([])
 const openaiLoading = ref<boolean>(false)
 const anthropicLoading = ref<boolean>(false)
 const geminiLoading = ref<boolean>(false)
@@ -77,7 +77,7 @@ const sendPrompt = async () => {
   openaiLoading.value = true
   fetch('/api/openai', {
     method: 'POST',
-    body: JSON.stringify(openaiChatHistory.value.slice(1))
+    body: JSON.stringify(openaiChatHistory.value)
   })
     .then(async (res) => {
       if (res.ok) {
@@ -105,7 +105,7 @@ const sendPrompt = async () => {
   anthropicLoading.value = true
   fetch('/api/anthropic', {
     method: 'POST',
-    body: JSON.stringify(anthropicChatHistory.value.slice(1))
+    body: JSON.stringify(anthropicChatHistory.value)
   })
     .then(async (res) => {
       if (res.ok) {
@@ -133,7 +133,7 @@ const sendPrompt = async () => {
   geminiLoading.value = true
   fetch('/api/gemini', {
     method: 'POST',
-    body: JSON.stringify(geminiChatHistory.value.slice(1))
+    body: JSON.stringify(geminiChatHistory.value)
   })
     .then(async (res) => {
       if (res.ok) {
