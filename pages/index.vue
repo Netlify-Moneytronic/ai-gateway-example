@@ -21,7 +21,7 @@ interface Message {
 }
 
 // State
-const title = 'Netlify AI Gateway Demo'
+const title = 'Netlify AI Gateway Playground'
 const openaiChatHistory = ref<Message[]>([])
 const anthropicChatHistory = ref<Message[]>([])
 const geminiChatHistory = ref<Message[]>([])
