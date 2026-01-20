@@ -12,13 +12,13 @@ export default defineEventHandler(async (event) => {
     let messages: Message[] = [];
     const previousMessages = await readBody(event);
     messages = JSON.parse(previousMessages);
-    const completion = await openai.chat.completions.create({
-        model: "gpt-5.2",
-        messages
+    const response = await openai.responses.create({
+        model: "gpt-5.2-pro",
+        input: messages
     });
 
     return {
-        message: completion.choices[0].message.content
+        message: response.output_text
     };
 
 });

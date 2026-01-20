@@ -174,7 +174,7 @@ const sendPrompt = async () => {
             <img src="/openai.svg" alt="OpenAI Logo" class="w-6 h-6 logo-container" />
             <h2 class="text-base font-semibold text-white">OpenAI</h2>
           </div>
-          <span class="text-xs text-white/60">GPT 5.2</span>
+          <span class="text-xs text-white/60">GPT 5.2 Pro</span>
         </div>
 
         <div class="bg-[#1C1C1C] rounded-2xl shadow-lg flex-1 flex flex-col min-h-0">

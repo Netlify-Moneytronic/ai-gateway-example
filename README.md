@@ -6,7 +6,7 @@
 
 This is a [Nuxt.js](https://nuxt.com/) v3 project bootstrapped with [`create nuxt`](https://github.com/nuxt/cli) and set up to be instantly deployed to [Netlify](https://url.netlify.com/SyTBPVamO)! You can take a look at the live version of the site [here](https://nuxt-ai-chat.netlify.app).
 
-This project is a simple chat app that lets you compare responses from [Anthropic's Claude Opus 4.5](https://www.anthropic.com/claude), [OpenAI's GPT 5.2](https://openai.com/), and [Google's Gemini 3 Pro](https://deepmind.google/technologies/gemini/) side by side. It uses **Netlify AI Gateway** to handle AI inference without requiring you to manage API keys. The app includes 3 server functions that call all three models simultaneously, allowing you to compare their responses to the same prompt. 
+This project is a simple chat app that lets you compare responses from [Anthropic's Claude Opus 4.5](https://www.anthropic.com/claude), [OpenAI's GPT 5.2 Pro](https://openai.com/), and [Google's Gemini 3 Pro](https://deepmind.google/technologies/gemini/) side by side. It uses **Netlify AI Gateway** to handle AI inference without requiring you to manage API keys. The app includes 3 server functions that call all three models simultaneously, allowing you to compare their responses to the same prompt. 
 
 With Netlify, you'll have access to features like [Branch Deploys](https://docs.netlify.com/site-deploys/overview/#branches-and-deploys) and [Deploy Previews](https://docs.netlify.com/deploy-preview/), so we encourage you to deploy this, modify it, learn and have fun!
 
@@ -87,7 +87,7 @@ When deployed to Netlify, the AI Gateway automatically:
 
 #### Supported Models
 
-- **OpenAI**: GPT 5.2
+- **OpenAI**: GPT 5.2 Pro
 - **Anthropic**: Claude Opus 4.5
 - **Google**: Gemini 3 Pro
 
