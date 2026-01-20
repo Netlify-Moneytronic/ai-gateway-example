@@ -314,12 +314,6 @@ const sendPrompt = async () => {
 
     <div class="flex justify-center items-center space-x-6 py-3 flex-shrink-0">
       <NuxtLink
-        to="https://docs.netlify.com/build/ai-gateway/overview/"
-        class="flex items-center text-sm font-medium text-white/70 hover:text-white transition-colors underline underline-offset-4"
-      >
-        Built with Netlify AI Gateway
-      </NuxtLink>
-      <NuxtLink
         to="https://netlify.com/"
         class="flex items-center font-medium underline transition-colors underline-offset-4 hover:text-white/70"
       >
@@ -336,6 +330,12 @@ const sendPrompt = async () => {
         class="flex items-center font-medium underline transition-colors underline-offset-4 hover:text-white/70"
       >
         <img src="/github.svg" class="h-3" alt="GitHub Logo" />
+      </NuxtLink>
+      <NuxtLink
+        to="https://docs.netlify.com/build/ai-gateway/overview/"
+        class="flex items-center text-sm font-medium text-white/70 hover:text-white transition-colors underline underline-offset-4"
+      >
+        Built with Netlify AI Gateway
       </NuxtLink>
       <button
         @click="openContactModal"
@@ -355,7 +355,7 @@ const sendPrompt = async () => {
       <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" @click="closeContactModal"></div>
 
       <!-- Modal content -->
-      <div class="relative bg-[#0f1a1a] border border-[#2C2C2C] rounded-2xl p-6 text-white shadow-xl max-w-lg w-full mx-4 z-10">
+      <div class="relative bg-[#0f1a1a] border border-[#2C2C2C] rounded-2xl p-8 text-white shadow-xl max-w-xl w-full mx-4 z-10">
         <!-- Close button -->
         <button
           @click="closeContactModal"
@@ -366,12 +366,9 @@ const sendPrompt = async () => {
           </svg>
         </button>
 
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
-          <div>
-            <h3 class="text-lg font-semibold">Contact the team</h3>
-            <p class="text-sm text-white/70">Questions, ideas, or feedback? Drop a note and we will reply soon.</p>
-          </div>
-          <span class="text-xs uppercase tracking-wide text-white/60">Netlify Forms enabled</span>
+        <div class="mb-6">
+          <h3 class="text-lg font-semibold">Contact the team</h3>
+          <p class="text-sm text-white/70">Questions, ideas, or feedback? Drop a note and we will reply soon.</p>
         </div>
 
         <form
@@ -379,7 +376,7 @@ const sendPrompt = async () => {
           method="POST"
           data-netlify="true"
           data-netlify-honeypot="bot-field"
-          class="grid grid-cols-1 md:grid-cols-2 gap-3"
+          class="grid grid-cols-1 md:grid-cols-2 gap-4"
         >
           <input type="hidden" name="form-name" value="contact" />
           <div class="hidden">
@@ -395,7 +392,7 @@ const sendPrompt = async () => {
               name="name"
               type="text"
               required
-              class="p-2 rounded-xl bg-[#1C1C1C] border border-[#2C2C2C] focus:border-white/40 focus:outline-none text-sm"
+              class="p-3 rounded-xl bg-[#1C1C1C] border border-[#2C2C2C] focus:border-white/40 focus:outline-none text-sm"
               placeholder="Ada Lovelace"
             />
           </label>
@@ -406,7 +403,7 @@ const sendPrompt = async () => {
               name="email"
               type="email"
               required
-              class="p-2 rounded-xl bg-[#1C1C1C] border border-[#2C2C2C] focus:border-white/40 focus:outline-none text-sm"
+              class="p-3 rounded-xl bg-[#1C1C1C] border border-[#2C2C2C] focus:border-white/40 focus:outline-none text-sm"
               placeholder="you@example.com"
             />
           </label>
@@ -415,14 +412,14 @@ const sendPrompt = async () => {
             <span class="text-sm font-medium text-white/80">Message</span>
             <textarea
               name="message"
-              rows="3"
+              rows="4"
               required
-              class="p-2 rounded-xl bg-[#1C1C1C] border border-[#2C2C2C] focus:border-white/40 focus:outline-none text-sm"
+              class="p-3 rounded-xl bg-[#1C1C1C] border border-[#2C2C2C] focus:border-white/40 focus:outline-none text-sm"
               placeholder="Tell us what you're thinking about."
             ></textarea>
           </label>
 
-          <div class="md:col-span-2 flex justify-end">
+          <div class="md:col-span-2 flex justify-end mt-2">
             <button
               type="submit"
               class="px-4 py-2 rounded-xl bg-white text-black font-semibold hover:bg-white/90 transition text-sm"
